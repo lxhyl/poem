@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { FluentArrowStepBack20Regular, FluentArrowStepOver20Regular, MaterialSymbolsDarkModeRounded, MaterialSymbolsWbSunnyOutline } from "./Icon";
+import { useEffect, useState } from "react";
+import { CiDot01Xs, FluentArrowStepBack20Regular, FluentArrowStepOver20Regular, MaterialSymbolsDarkModeRounded, MaterialSymbolsWbSunnyOutline } from "./Icon";
 
 enum ThemeMode {
     Light = "light",
@@ -10,14 +10,17 @@ export default function Header(props: {
 }) {
     const { getNextPoem } = props
     const [currentMode, setCurrentMode] = useState<ThemeMode>()
+    const [dotClass, setDotClass] = useState<string>()
     useEffect(() => {
         let mode: any = localStorage.getItem("theme_mode")
+        console.log("mode", mode)
         if (!mode) {
             mode = ThemeMode.Light
         }
         setCurrentMode(mode)
     }, [])
     useEffect(() => {
+        if (!currentMode) return
         if (currentMode === ThemeMode.Light) {
             document.body.classList.remove("dark")
             localStorage.setItem("theme_mode", ThemeMode.Light)
@@ -26,12 +29,31 @@ export default function Header(props: {
             localStorage.setItem("theme_mode", ThemeMode.Dark)
         }
     }, [currentMode])
-    return <div className="w-full flex justify-between p-2 items-center ">
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>
+        if (dotClass) {
+            timer = setTimeout(() => {
+                setDotClass('')
+                clearTimeout(timer)
+            }, 1500)
+        }
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [dotClass])
+    return <div className="w-full flex justify-between p-2 items-center cursor-pointer">
         <div className="flex gap-2 items-center justify-center">
-            <FluentArrowStepBack20Regular onClick={() => getNextPoem(1)} />
-            <FluentArrowStepOver20Regular onClick={() => getNextPoem(-1)} />
+            <FluentArrowStepBack20Regular onClick={() => {
+                getNextPoem(1)
+                setDotClass('animate-bounce')
+            }} />
+            <CiDot01Xs key="dot" className={`mt-2 transition-all duration-1000 ease-in-out ${dotClass}`} />
+            <FluentArrowStepOver20Regular onClick={() => {
+                getNextPoem(-1)
+                setDotClass('animate-bounce')
+            }} />
         </div>
-        {currentMode === ThemeMode.Dark && <MaterialSymbolsDarkModeRounded onClick={() => setCurrentMode(ThemeMode.Light)} />}
+        {currentMode === ThemeMode.Dark && <MaterialSymbolsDarkModeRounded onClick={() => setCurrentMode(ThemeMode.Light)} className="hover:bg-red" />}
         {currentMode === ThemeMode.Light && <MaterialSymbolsWbSunnyOutline onClick={() => setCurrentMode(ThemeMode.Dark)} />}
     </div>
 }

@@ -13,7 +13,6 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     fetch('/api/poemList').then(body => body.json().then(res => {
-      console.log("Res", res)
       setPageIds(res.pages)
       setPoemId(res.pages[res.pages.length - 1])
     }))
@@ -31,8 +30,8 @@ const Home: NextPage = () => {
       <Head>
         <title>{title}</title>
       </Head>
-      <div className='fixed w-screen h-screen bg-gray-50  dark:bg-gray-900'></div>
-      <div className='w-screen h-screen font-light relative flex  flex-col items-center font-mono  bg-gray-50  dark:bg-gray-900 dark:text-slate-400'>
+      <div className='fixed w-screen h-screen bg-gray-50  dark:bg-gray-900 transition-colors duration-500 ease-in-out'></div>
+      <div className='w-screen h-screen font-light relative flex  flex-col items-center font-mono  bg-gray-50  dark:bg-gray-900 dark:text-slate-400 transition-colors duration-500 ease-in-out'>
         <Header getNextPoem={getNextPoem} />
         <Poem setTitle={setTitle} id={poemId}></Poem>
       </div>

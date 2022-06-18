@@ -7,5 +7,5 @@ export default async function handler(
 ) {
     const response = await api.getPage(req.query.id as string)
 
-    res.status(200).end(JSON.stringify({ response }))
+    res.status(200).end(JSON.stringify(response))
 }
