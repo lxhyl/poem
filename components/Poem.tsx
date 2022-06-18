@@ -26,6 +26,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
         setTitle(`${poemTitle}`)
     }, [poemTitle, setTitle])
     const writtenDate = useMemo(() => {
+        if (!pageRow?.block) return
         const block: any = Object.values(pageRow.block)?.[0]
         const metaProperties = block?.value?.properties
         const metaWrittenDate = metaProperties?.['Z|YX']?.[0]?.[1]?.[0]
