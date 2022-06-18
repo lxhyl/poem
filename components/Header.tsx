@@ -52,7 +52,7 @@ export default function Header(props: {
                 setDotClass('animate-bounce')
             }} />
         </div>
-        {currentMode === ThemeMode.Dark && <MaterialSymbolsDarkModeRounded onClick={() => setCurrentMode(ThemeMode.Light)} className="hover:bg-red" />}
+        {currentMode === ThemeMode.Dark && <MaterialSymbolsDarkModeRounded onClick={() => setCurrentMode(ThemeMode.Light)} />}
         {currentMode === ThemeMode.Light && <MaterialSymbolsWbSunnyOutline onClick={() => setCurrentMode(ThemeMode.Dark)} />}
     </div>
 }

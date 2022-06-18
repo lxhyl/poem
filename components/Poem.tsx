@@ -1,7 +1,6 @@
 
 import { useState, useEffect, useMemo } from "react"
 import { motion } from "framer-motion"
-import { DateTime } from "luxon"
 import { EosIconsThreeDotsLoading } from "./Icon"
 export default function Poem(props: { id: string, setTitle: (title: string) => void }) {
     const { setTitle, id } = props
@@ -38,18 +37,28 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
     }) {
         const { text } = props
         const [isHover, setIsHover] = useState(false)
-        return <div className="mb-8 relative"
+        const widths = Array.from({ length: 20 }, (_, index) => `${index + 1}rem`)
+        return <motion.div className="mb-8 relative flex justify-center"
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
+
         >
-            <p className="h-8 text-center text-lg font-normal cursor-pointer"
+            <motion.p className="w-full h-8 text-center text-lg font-normal cursor-pointer"
+                animate={{
+                    overflow: ['hidden'],
+                    width: widths,
+                }}
+                transition={{
+                    duration: 2,
+                    ease: 'easeInOut',
+                }}
             >
                 {text}
-            </p>
+            </motion.p>
             {isHover && <div className="absolute -bottom-4 italic text-xs text-center w-full text-gray-500">
                 {`lxhyl.${writtenDate}`}
             </div>}
-        </div>
+        </motion.div>
     }
     if (!id) return <div className="my-8 flex">
         也许这里会有一行诗
@@ -69,7 +78,6 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
                     animate={{
                         opacity: [0, 1]
                     }}
-                    hidden={!content.length}
                     transition={{
                         duration: index * 0.6,
                         ease: "easeInOut",
