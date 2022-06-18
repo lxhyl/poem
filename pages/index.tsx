@@ -1,53 +1,42 @@
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
+import Header from '../components/Header'
 
-const Poem = (props: { id: string }) => {
-  const [poem, setPoem] = useState<any[]>()
+import Poem from "../components/Poem"
 
-  useEffect(() => {
-    if (!props.id) return
-    fetch('/api/poem/?id=' + props.id).then(body => body.json()).then(data => {
-      console.log("daata", data)
-      setPoem(Object.values(data.response.block))
-    })
-  }, [props.id])
-  useEffect(() => {
-    console.log("poem", poem)
-  }, [poem])
-  if (!props.id) return null
-  return (
-    <div style={{ margin: "50px 0" }}>
-      {poem && poem.map((line, index) => {
-        if (line.role === 'reader') {
-          return <div key={index}>{line.value?.properties?.title?.[0]}</div>
-        }
-        return null
-      })}
-    </div>
-  )
-}
 
-const Home: NextPage = (props) => {
-  const [pageIds, setPageIds] = useState([])
+const Home: NextPage = () => {
+  const [title, setTitle] = useState<string>("lxhyl's poem")
+  const [pageIds, setPageIds] = useState<string[]>([])
   const [poemId, setPoemId] = useState('')
+
   useEffect(() => {
-    fetch('/api/hello').then(body => body.json().then(res => {
+    fetch('/api/poemList').then(body => body.json().then(res => {
       console.log("Res", res)
       setPageIds(res.pages)
-      setPoemId(res.pages[0])
+      setPoemId(res.pages[res.pages.length - 1])
     }))
   }, [])
-  const getNextPoem = () => {
-    // @ts-ignore
+  const getNextPoem = (step: number) => {
+    const len = pageIds.length
     const index = pageIds.indexOf(poemId)
-    const nextIndex = index + 1
+    let nextIndex = (index + step)
+    if (nextIndex < 0) nextIndex = len - 1
+    if (nextIndex >= len) nextIndex = 0
     setPoemId(pageIds[nextIndex])
   }
   return (
-    <div >
-      <Poem id={poemId}></Poem>
-      <button onClick={() => getNextPoem()}>Next</button>
-    </div>
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <div className='fixed w-screen h-screen bg-gray-50  dark:bg-gray-900'></div>
+      <div className='w-screen h-screen font-light relative flex  flex-col items-center font-mono  bg-gray-50  dark:bg-gray-900 dark:text-slate-400'>
+        <Header getNextPoem={getNextPoem} />
+        <Poem setTitle={setTitle} id={poemId}></Poem>
+      </div>
+    </>
   )
 }
 
