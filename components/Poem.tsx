@@ -21,7 +21,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
         if (!poemTitle || !setTitle) return
         setTitle(poemTitle)
     }, [poemTitle, setTitle])
-    if (!id) return <div>
+    if (!id) return <div className="my-12">
         Maybe there will be this poem
     </div>
     console.log("render count")
