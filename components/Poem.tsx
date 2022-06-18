@@ -37,7 +37,8 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
     }) {
         const { text } = props
         const [isHover, setIsHover] = useState(false)
-        const widths = Array.from({ length: 20 }, (_, index) => `${index + 1}rem`)
+        console.log("text", text[0])
+
         return <motion.div className="mb-8 relative flex justify-center"
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
@@ -46,10 +47,10 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
             <motion.p className="w-full h-8 text-center text-lg font-normal cursor-pointer"
                 animate={{
                     overflow: ['hidden'],
-                    width: widths,
+                    opacity: [0, 1]
                 }}
                 transition={{
-                    duration: 2,
+                    duration: 0.5,
                     ease: 'easeInOut',
                 }}
             >
@@ -89,7 +90,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
                         const isHeader = line.value.type === 'page'
                         if (isHeader) {
 
-                            return <RenderTitle text={text} />
+                            return <RenderTitle key={index} text={text} />
                         }
                         return <p
                             className={`h-8 text-center`} key={index}>
