@@ -13,7 +13,6 @@ export default function Header(props: {
     const [dotClass, setDotClass] = useState<string>()
     useEffect(() => {
         let mode: any = localStorage.getItem("theme_mode")
-        console.log("mode", mode)
         if (!mode) {
             mode = ThemeMode.Light
         }

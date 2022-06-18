@@ -7,13 +7,13 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
     const { setTitle, id } = props
     const [poem, setPoem] = useState<any[]>()
     const [loading, setLoading] = useState(true)
-
+    const [pageRow, setPageRow] = useState<any>()
     useEffect(() => {
         if (!id) return
         setLoading(true)
         fetch('/api/poem/?id=' + id).then(body => body.json()).then(data => {
-            setPoem(Object.values(data.block))
-
+            setPoem(Object.values(data.pageContent.block))
+            setPageRow(data.pageRaw.recordMap)
         }).finally(() => setLoading(false))
     }, [id])
     const poemTitle = useMemo(() => {
@@ -25,11 +25,17 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
         if (!poemTitle || !setTitle) return
         setTitle(`${poemTitle}`)
     }, [poemTitle, setTitle])
+    const writtenDate = useMemo(() => {
+        const block: any = Object.values(pageRow.block)?.[0]
+        const metaProperties = block?.value?.properties
+        const metaWrittenDate = metaProperties?.['Z|YX']?.[0]?.[1]?.[0]
+        const date = metaWrittenDate?.[1]?.start_date
+        return date
+    }, [pageRow])
     function RenderTitle(props: {
-        updateAt: string
         text: string
     }) {
-        const { updateAt, text } = props
+        const { text } = props
         const [isHover, setIsHover] = useState(false)
         return <div className="mb-8 relative"
             onMouseEnter={() => setIsHover(true)}
@@ -40,7 +46,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
                 {text}
             </p>
             {isHover && <div className="absolute -bottom-4 italic text-xs text-center w-full text-gray-500">
-                {`lxhyl.${updateAt}`}
+                {`lxhyl.${writtenDate}`}
             </div>}
         </div>
     }
@@ -73,9 +79,8 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
                     {content.map((text: string, index: number) => {
                         const isHeader = line.value.type === 'page'
                         if (isHeader) {
-                            console.log("line", line)
-                            const updateAt = DateTime.fromMillis(line.value.last_edited_time).toLocal().toFormat('yyyy-MM-dd')
-                            return <RenderTitle text={text} updateAt={updateAt} />
+
+                            return <RenderTitle text={text} />
                         }
                         return <p
                             className={`h-8 text-center`} key={index}>

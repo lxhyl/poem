@@ -5,7 +5,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
-    const response = await api.getPage(req.query.id as string)
-
-    res.status(200).end(JSON.stringify(response))
+    const pageContent = await api.getPage(req.query.id as string)
+    const pageRaw = await api.getBlocks([req.query.id as string])
+    res.status(200).end(JSON.stringify({ pageContent, pageRaw }))
 }
