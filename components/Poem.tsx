@@ -42,7 +42,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
             onMouseLeave={() => setIsHover(false)}
 
         >
-            <motion.p className="w-full h-8 text-center text-lg font-normal cursor-pointer"
+            <motion.p className="w-full text-center text-lg font-normal cursor-pointer"
                 animate={{
                     overflow: ['hidden'],
                     opacity: [0, 1]
@@ -55,7 +55,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
                 {text}
             </motion.p>
             {isHover && <div className="absolute -bottom-4 italic text-xs text-center w-full text-gray-500">
-                {`lxhyl.${writtenDate}`}
+                {`${writtenDate}`}
             </div>}
         </motion.div>
     }
@@ -66,7 +66,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
         写作中<EosIconsThreeDotsLoading />
     </div>
     return (
-        <div className="my-4">
+        <div className="my-4 mx-2">
             {poem && poem.map((line, index) => {
                 if (line.role !== 'reader') {
                     return null
@@ -91,7 +91,7 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
                             return <RenderTitle key={index} text={text?.[0]} />
                         }
                         return <p
-                            className={`h-8 text-center`} key={index}>
+                            className={`py-2 text-center`} key={index}>
                             {text?.[0]}
                         </p>
                     })}
