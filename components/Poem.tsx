@@ -10,7 +10,10 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
     useEffect(() => {
         if (!id) return
         setLoading(true)
+        setPoem(undefined)
+        setPageRow(undefined)
         fetch('/api/poem/?id=' + id).then(body => body.json()).then(data => {
+            if (!data.ok) return
             setPoem(Object.values(data.pageContent.block))
             setPageRow(data.pageRaw.recordMap)
         }).finally(() => setLoading(false))
@@ -59,12 +62,13 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
             </div>}
         </motion.div>
     }
-    if (!id) return <div className="my-8 flex">
-        也许这里会有一行诗
-    </div>
     if (loading) return <div className="flex my-8 items-center">
         写作中<EosIconsThreeDotsLoading />
     </div>
+    if (!id || !poem || !poem.length) return <div className="my-8 flex">
+        也许这里会有一行诗
+    </div>
+
     return (
         <div className="my-4 mx-2">
             {poem && poem.map((line, index) => {
