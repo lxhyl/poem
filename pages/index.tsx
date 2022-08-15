@@ -14,7 +14,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     fetch('/api/poemList').then(body => body.json().then(res => {
       setPageIds(res.pages)
-      setPoemId(res.pages[0])
+      setPoemId(res.pages[9])
     }))
   }, [])
   const getNextPoem = (step: number) => {
@@ -25,6 +25,7 @@ const Home: NextPage = () => {
     if (nextIndex >= len) nextIndex = 0
     setPoemId(pageIds[nextIndex])
   }
+
   return (
     <>
       <Head>
