@@ -42,15 +42,17 @@ export default function Header(props: {
     }, [dotClass])
     return <div className="w-full flex justify-between p-2 items-center cursor-pointer">
         <div className="flex gap-2 items-center justify-center">
-            <FluentArrowStepBack20Regular onClick={() => {
+            {/* <FluentArrowStepBack20Regular onClick={() => {
                 getNextPoem(1)
                 setDotClass('animate-bounce')
             }} />
+
             <CiDot01Xs key="dot" className={`mt-2 transition-all duration-1000 ease-in-out ${dotClass}`} />
             <FluentArrowStepOver20Regular onClick={() => {
                 getNextPoem(-1)
                 setDotClass('animate-bounce')
-            }} />
+            }} /> */}
+            <span onClick={() => getNextPoem(1)}>下一首</span>
         </div>
         {currentMode === ThemeMode.Dark && <MaterialSymbolsDarkModeRounded onClick={() => setCurrentMode(ThemeMode.Light)} />}
         {currentMode === ThemeMode.Light && <MaterialSymbolsWbSunnyOutline onClick={() => setCurrentMode(ThemeMode.Dark)} />}
