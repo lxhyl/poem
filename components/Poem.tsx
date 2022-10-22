@@ -62,10 +62,10 @@ export default function Poem(props: { id: string, setTitle: (title: string) => v
             </div>}
         </motion.div>
     }
-    if (loading) return <div className="flex my-8 items-center">
+    if (loading) return <div className="flex w-full my-8 items-center justify-center">
         写作中<EosIconsThreeDotsLoading />
     </div>
-    if (!id || !poem || !poem.length) return <div className="my-8 flex">
+    if (!id || !poem || !poem.length) return <div className="my-8 w-full justify-center flex">
         也许这里会有一行诗
     </div>
 
